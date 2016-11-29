@@ -459,8 +459,8 @@ command! -count=1 VimwikiIndex
 command! -count=1 VimwikiTabIndex
       \ call vimwiki#base#goto_index(v:count1, 1)
 
-command! -count=1 VimwikiDiaryIndex
-      \ call vimwiki#diary#goto_diary_index(v:count1)
+command! -count=0 VimwikiDiaryIndex
+      \ call vimwiki#diary#goto_diary_index(<count>)
 command! -count=1 VimwikiMakeDiaryNote
       \ call vimwiki#diary#make_note(v:count1)
 command! -count=1 VimwikiTabMakeDiaryNote
