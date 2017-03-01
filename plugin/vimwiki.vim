@@ -454,19 +454,19 @@ augroup END
 command! VimwikiUISelect call vimwiki#base#ui_select()
 " XXX: why not using <count> instead of v:count1?
 " See Issue 324.
-command! -count=1 VimwikiIndex
-      \ call vimwiki#base#goto_index(v:count1)
-command! -count=1 VimwikiTabIndex
-      \ call vimwiki#base#goto_index(v:count1, 1)
+command! -count=0 VimwikiIndex
+      \ call vimwiki#base#goto_index(<count>)
+command! -count=0 VimwikiTabIndex
+      \ call vimwiki#base#goto_index(<count>, 1)
 
 command! -count=0 VimwikiDiaryIndex
       \ call vimwiki#diary#goto_diary_index(<count>)
-command! -count=1 VimwikiMakeDiaryNote
-      \ call vimwiki#diary#make_note(v:count1)
-command! -count=1 VimwikiTabMakeDiaryNote
-      \ call vimwiki#diary#make_note(v:count1, 1)
-command! -count=1 VimwikiMakeYesterdayDiaryNote
-      \ call vimwiki#diary#make_note(v:count1, 0, strftime(VimwikiGet('diary_link_fmt', v:count1 - 1), localtime() - 60*60*24))
+command! -count=0 VimwikiMakeDiaryNote
+      \ call vimwiki#diary#make_note(<count>)
+command! -count=0 VimwikiTabMakeDiaryNote
+      \ call vimwiki#diary#make_note(<count>, 1)
+command! -count=0 VimwikiMakeYesterdayDiaryNote
+      \ call vimwiki#diary#make_note(<count>, 0, strftime(VimwikiGet('diary_link_fmt', vimwiki#base#get_wiki_nr(<count>)), localtime() - 60*60*24))
 
 command! VimwikiDiaryGenerateLinks
       \ call vimwiki#diary#generate_diary_section()

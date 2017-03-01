@@ -237,19 +237,24 @@ function! vimwiki#base#find_wiki(path) "{{{
 endfunction "}}}
 
 
-" Returns: wiki index from wnum
-function! vimwiki#base#get_wiki_index(wnum) "{{{
+" Returns: wiki number/index from wnum
+function! vimwiki#base#get_wiki_nr(wnum) "{{{
+  " if a wnum is explicitly given then try to use that
   if a:wnum > len(g:vimwiki_list)
     echomsg 'Vimwiki Error: Wiki '.a:wnum.' is not registered in g:vimwiki_list!'
     return
-  endif
-
-  if a:wnum > 0
+  elseif a:wnum > 0
     let idx = a:wnum - 1
   elseif exists('b:vimwiki_idx')
+    " use the wiki number of the current buffer
     echomsg 'a:wnum='.a:wnum.'; b:vimwiki_idx='.b:vimwiki_idx
     let idx = b:vimwiki_idx
+  elseif exists('g:vimwiki_current_idx')
+    " use the global wiki number
+    echomsg 'a:wnum='.a:wnum.'; g:vimwiki_current_idx='.g:vimwiki_current_idx
+    let idx = g:vimwiki_current_idx
   else
+    " when all else fails go to the first wiki
     let idx = 0
   endif
 
@@ -1300,18 +1305,7 @@ endfunction " }}}
 
 " vimwiki#base#goto_index
 function! vimwiki#base#goto_index(wnum, ...) "{{{
-  if a:wnum > len(g:vimwiki_list)
-    echomsg 'Vimwiki Error: Wiki '.a:wnum.' is not registered in g:vimwiki_list!'
-    return
-  endif
-
-  " usually a:wnum is greater then 0 but with the following command it is == 0:
-  " vim -n -c "exe 'VimwikiIndex' | echo g:vimwiki_current_idx"
-  if a:wnum > 0
-    let idx = a:wnum - 1
-  else
-    let idx = 0
-  endif
+  let idx = vimwiki#base#get_wiki_nr(a:wnum)
 
   if a:0
     let cmd = 'tabedit'
